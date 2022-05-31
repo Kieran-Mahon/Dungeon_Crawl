@@ -1,5 +1,6 @@
 package dungeon_crawl;
 
+import dungeon_crawl.Items.Item;
 import java.util.ArrayList;
 
 /*

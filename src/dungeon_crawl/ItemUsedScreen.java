@@ -1,5 +1,7 @@
 package dungeon_crawl;
 
+import dungeon_crawl.Items.Item;
+
 /*
  * @author Kieran
  */

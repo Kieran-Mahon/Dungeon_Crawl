@@ -1,5 +1,7 @@
 package dungeon_crawl;
 
+import dungeon_crawl.Utilities.TimeManager;
+
 /*
  * @author Kieran
  */

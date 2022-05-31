@@ -5,6 +5,7 @@
  */
 package dungeon_crawl;
 
+import dungeon_crawl.Controllers.IOController;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;

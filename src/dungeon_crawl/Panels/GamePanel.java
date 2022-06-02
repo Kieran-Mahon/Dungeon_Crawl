@@ -5,16 +5,20 @@
  */
 package dungeon_crawl.Panels;
 
+import dungeon_crawl.Controllers.DungeonCrawl;
+
 /**
  *
  * @author Kieran
  */
 public class GamePanel extends javax.swing.JPanel {
 
+    private DungeonCrawl dungeonCrawl;
     private javax.swing.JLabel[][] labels = new javax.swing.JLabel[7][11];
     
-    public GamePanel() {
+    public GamePanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
         //Create grid
         for (int i = 0; i < labels.length; i++) {
             for (int j = 0; j < labels[0].length; j++) {
@@ -156,7 +160,7 @@ public class GamePanel extends javax.swing.JPanel {
 
             levelLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
             levelLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-            levelLabel.setText("LEVEL 1");
+            levelLabel.setText("LEVEL E");
 
             javax.swing.GroupLayout sidePanelLayout = new javax.swing.GroupLayout(sidePanel);
             sidePanel.setLayout(sidePanelLayout);
@@ -192,26 +196,29 @@ public class GamePanel extends javax.swing.JPanel {
         }// </editor-fold>//GEN-END:initComponents
 
     private void moveDownButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveDownButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.movePlayer("S");
     }//GEN-LAST:event_moveDownButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.saveGameInGrid();
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void moveUpButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveUpButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.movePlayer("W");
     }//GEN-LAST:event_moveUpButtonActionPerformed
 
     private void moveLeftButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveLeftButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.movePlayer("A");
     }//GEN-LAST:event_moveLeftButtonActionPerformed
 
     private void moveRightButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_moveRightButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.movePlayer("D");
     }//GEN-LAST:event_moveRightButtonActionPerformed
 
-
+    public void updateLevelLabel(String newText) {
+        this.levelLabel.setText(newText);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel gameIconInfoLabel;
     private javax.swing.JLabel gameTitleLabel;

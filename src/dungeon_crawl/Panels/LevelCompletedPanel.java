@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dungeon_crawl.Panels;
 
-/**
- *
+import dungeon_crawl.Controllers.DungeonCrawl;
+
+/*
  * @author Kieran
  */
 public class LevelCompletedPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form LevelCompletedPanel
-     */
-    public LevelCompletedPanel() {
+    private DungeonCrawl dungeonCrawl;
+    
+    public LevelCompletedPanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
     }
 
     /**
@@ -29,7 +25,7 @@ public class LevelCompletedPanel extends javax.swing.JPanel {
 
         gameTitleLabel = new javax.swing.JLabel();
         gameLevelCompletedLabel = new javax.swing.JLabel();
-        nextLevelButton = new javax.swing.JButton();
+        continueButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
         timeTakenLabel = new javax.swing.JLabel();
         characterResetLabel = new javax.swing.JLabel();
@@ -42,11 +38,11 @@ public class LevelCompletedPanel extends javax.swing.JPanel {
         gameLevelCompletedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         gameLevelCompletedLabel.setText("LEVEL # COMPLETED!");
 
-        nextLevelButton.setText("NEXT LEVEL");
-        nextLevelButton.setPreferredSize(new java.awt.Dimension(120, 40));
-        nextLevelButton.addActionListener(new java.awt.event.ActionListener() {
+        continueButton.setText("CONTINUE");
+        continueButton.setPreferredSize(new java.awt.Dimension(120, 40));
+        continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextLevelButtonActionPerformed(evt);
+                continueButtonActionPerformed(evt);
             }
         });
 
@@ -72,7 +68,7 @@ public class LevelCompletedPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
-                .addComponent(nextLevelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(98, 98, 98))
@@ -94,26 +90,31 @@ public class LevelCompletedPanel extends javax.swing.JPanel {
                 .addComponent(characterResetLabel)
                 .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nextLevelButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(65, 65, 65))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void nextLevelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextLevelButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextLevelButtonActionPerformed
+    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
+        this.dungeonCrawl.levelContinue();
+    }//GEN-LAST:event_continueButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        //Game is saved when this screen is shown so no need to save again
+        System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
-
+    
+    public void updateText(String level, String time) {
+        this.gameLevelCompletedLabel.setText("LEVEL " + level + " COMPLETED!");
+        this.timeTakenLabel.setText("TIME TAKEN: " + time);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel characterResetLabel;
+    private javax.swing.JButton continueButton;
     private javax.swing.JLabel gameLevelCompletedLabel;
     private javax.swing.JLabel gameTitleLabel;
-    private javax.swing.JButton nextLevelButton;
     private javax.swing.JButton quitButton;
     private javax.swing.JLabel timeTakenLabel;
     // End of variables declaration//GEN-END:variables

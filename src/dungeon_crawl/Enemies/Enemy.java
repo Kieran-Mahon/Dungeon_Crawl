@@ -120,4 +120,10 @@ public abstract class Enemy implements GameObject {
     public String getGridName() {
         return "E";
     }
+    
+    public void resetEnemy() {
+        this.health = maxHealth;
+        this.stunTime = 0;
+        this.blocking = false;
+    }
 }

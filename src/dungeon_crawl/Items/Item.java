@@ -51,4 +51,22 @@ public class Item implements GameObject {
     public String toString() {
         return this.name;
     }
+    
+    public String getInfo() {
+        String toReturn = "<html><b>" + this.name + "</b><br>";
+        if (this.damage > 0) {
+            toReturn += this.damage + " DAMAGE<br>";
+        }
+        if (this.heal > 0) {
+            toReturn += "+" + this.heal + " HEALTH<br>";
+        }
+        if (this.turnsStunned > 0) {
+            toReturn += this.turnsStunned + " TURNS STUNNED<br>";
+        }
+        if (this.canBlock == true) {
+            toReturn += "BLOCKS DMG NEXT TURN<br>";
+        }
+        
+        return (toReturn + "</html>");
+    }
 }

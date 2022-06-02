@@ -1,5 +1,6 @@
 package dungeon_crawl;
 
+import dungeon_crawl.Controllers.DungeonCrawl;
 import dungeon_crawl.Items.Item;
 import dungeon_crawl.Enemies.Enemy;
 import dungeon_crawl.Items.Punch;
@@ -132,7 +133,7 @@ public class Player implements GameObject {
     }
     
     //Use item (used in battle)
-    public void useItem(Item item, Enemy enemy) {
+    public void useItem(Item item, Enemy enemy, DungeonCrawl dungeonCrawl) {
         //Enemy effects
         if (enemy.isBlocking() == false) { //No effects if enemy is blocking
             enemy.takeDamage(item.getDamage());

@@ -8,6 +8,7 @@ import dungeon_crawl.Enemies.Enemy;
 import dungeon_crawl.Utilities.InputHandler;
 import dungeon_crawl.ItemReplacer;
 import dungeon_crawl.Player;
+import dungeon_crawl.PlayerPosition;
 import dungeon_crawl.WaitingForEnemyScreen;
 
 /*
@@ -16,11 +17,25 @@ import dungeon_crawl.WaitingForEnemyScreen;
 public class BattleController {
     private Enemy enemy;
     private Player player;
+    //Used to reset player to last location if they die
+    private PlayerPosition lastPlayerPos;
+    private DungeonCrawl dungeonCrawl;
     
-    public boolean battle(Enemy e, Player p) {
+    public boolean enemyTurn = false;
+    
+    public BattleController(PlayerPosition currentPlayerPos, DungeonCrawl dungeonCrawl) {
+        this.lastPlayerPos = currentPlayerPos;
+        this.dungeonCrawl = dungeonCrawl;
+    }
+        
+    public boolean startBattle(Enemy e, Player p) {
         this.enemy = e;
         this.player = p;
         this.player.resetPlayerCombat();
+        
+        //Update battle panel
+        updateBattle();
+        
         
         boolean playerWon = false;
         while (true) {
@@ -93,29 +108,41 @@ public class BattleController {
         return playerWon;
     }
     
-    private void playerAttack() {
-        //Get player item input
-        InputHandler battleInput = new InputHandler(new String[] {"Q", "W", "E", "R"});
-        String input = battleInput.getInput();
-
-        //Get the item
-        //Is only set as null at the start till the input is check (no
-        //invalid input as that is checked in the InputHandler)
-        Item itemInUse = null;
-        switch (input) {
-            case "Q": //Q slot item
-                itemInUse = this.player.getItems().get(0);
-                break;
-            case "W": //W slot item
-                itemInUse = this.player.getItems().get(1);
-                break;
-            case "E": //E slot item
-                itemInUse = this.player.getItems().get(2);
-                break;
-            case "R": //R slot item
-                itemInUse = this.player.getItems().get(3);
-                break;
+    private void updateBattle() {
+        //Display enemy and player info
+        this.dungeonCrawl.getViewController().getBattlePanel().updateEnemy(this.enemy.getName(), "HEALTH: " + this.enemy.getHealth());
+        this.dungeonCrawl.getViewController().getBattlePanel().updatePlayer("HEALTH: " + this.player.getHealth());
+        
+        //Display player items
+        String[] playerItems = new String[this.player.getItems().size()];
+        for (int i = 0; i < playerItems.length; i++) {
+            playerItems[i] = this.player.getItems().get(i).getInfo();
         }
-        this.player.useItem(itemInUse, this.enemy);
+        this.dungeonCrawl.getViewController().getBattlePanel().updateItemButtions(playerItems);
+    }
+    
+    public void playerAttack(String input) {
+        if (this.player.getStunTime() == 0) { //Check if not stunned
+            //Get the item
+            //Is only set as null at the start till the input is check (no
+            //invalid input as that is checked in the InputHandler)
+            Item itemInUse = null;
+            switch (input) {
+                case "Q": //Q slot item
+                    itemInUse = this.player.getItems().get(0);
+                    break;
+                case "W": //W slot item
+                    itemInUse = this.player.getItems().get(1);
+                    break;
+                case "E": //E slot item
+                    itemInUse = this.player.getItems().get(2);
+                    break;
+                case "R": //R slot item
+                    itemInUse = this.player.getItems().get(3);
+                    break;
+            }
+            this.player.useItem(itemInUse, this.enemy, this.dungeonCrawl);
+            this.dungeonCrawl.getViewController().getBattlePanel().updateBattleActionLabel(input);
+        }
     }
 }

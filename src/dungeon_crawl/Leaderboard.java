@@ -29,17 +29,20 @@ public class Leaderboard {
         loadLeaderboard();
     }
         
-    public void displayLeaderboard(){
+    public String displayLeaderboard(){
+        //String to return
+        String returnString = "<html>";
         //Check if the leaderboard list is not empty
         if (this.leaders.isEmpty() == false) {
             int i = 1;
             for (PlayerData leader : this.leaders) {
-                System.out.println(Screen.lineBorder(i + ": " + leader.toString()));
+                returnString += (i + ": " + leader.toString() + "<br>");
                 i++;
             }
         } else {
-            System.out.println("| NO LEADERS                                |");
+            returnString += "NO LEADERS, PLAY THE GAME TO BE INCLUDED!";
         }
+        return returnString + "</html>";
     }
     
     public void tryToAdd(PlayerData player) {

@@ -5,17 +5,19 @@
  */
 package dungeon_crawl.Panels;
 
+import dungeon_crawl.Controllers.DungeonCrawl;
+
 /**
  *
  * @author Kieran
  */
 public class NewGamePanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form NewGamePanel
-     */
-    public NewGamePanel() {
+    private DungeonCrawl dungeonCrawl;
+    
+    public NewGamePanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
         //Hide error label
         this.invalidNameLabel.setVisible(false);
     }
@@ -130,11 +132,12 @@ public class NewGamePanel extends javax.swing.JPanel {
     }//GEN-LAST:event_nameInputActionPerformed
 
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
-        // TODO add your handling code here:
+        this.invalidNameLabel.setVisible(this.dungeonCrawl.tryMakeNewGame(nameInput.getText()));
     }//GEN-LAST:event_startGameButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        //Quit program with no saving
+        System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
 
 

@@ -28,21 +28,18 @@ public class Board {
         return this.grid[row][col];
     }
     
-    public void displayBoard() {
+    public String[][] displayBoard() {
+        String[][] cells = new String[7][11];
         for (int row = 0; row < this.grid.length; row++) {
-            String line = "|";
             for (int col = 0; col < this.grid[0].length; col++) {
                 if (this.grid[row][col] == null) {
-                    line += "   |";
+                    cells[row][col] = "";
                 } else {
-                    line += " " + this.grid[row][col].getGridName() + " |";
+                    cells[row][col] = this.grid[row][col].getGridName();
                 }
             }
-            System.out.println(line);
-            if (row != (this.grid.length -1)) {
-                System.out.println("|---+---+---+---+---+---+---+---+---+---+---|");
-            }
         }
+        return cells;
     }
     
     public boolean loadBoard() {

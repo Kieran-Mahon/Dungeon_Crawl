@@ -1,21 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dungeon_crawl.Panels;
 
-/**
- *
+import dungeon_crawl.Controllers.DungeonCrawl;
+
+/*
  * @author Kieran
  */
 public class StartPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form NewJPanel
-     */
-    public StartPanel() {
+    private DungeonCrawl dungeonCrawl;
+            
+    public StartPanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
     }
 
     /**
@@ -114,19 +110,20 @@ public class StartPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void leaderboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_leaderboardButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.openLeaderboard();
     }//GEN-LAST:event_leaderboardButtonActionPerformed
 
     private void loadGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadGameButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.tryLoadGame();
     }//GEN-LAST:event_loadGameButtonActionPerformed
 
     private void newGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.openNewGame();
     }//GEN-LAST:event_newGameButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        //Quit program with no saving
+        System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
 
 

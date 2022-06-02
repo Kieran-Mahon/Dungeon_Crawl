@@ -5,17 +5,19 @@
  */
 package dungeon_crawl.Panels;
 
+import dungeon_crawl.Controllers.DungeonCrawl;
+
 /**
  *
  * @author Kieran
  */
 public class BattlePanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form BattlePanel
-     */
-    public BattlePanel() {
+    private DungeonCrawl dungeonCrawl;
+    
+    public BattlePanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
     }
 
     /**
@@ -210,26 +212,46 @@ public class BattlePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        //Game is saved before fight
+        System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void qButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.userItem("Q");
     }//GEN-LAST:event_qButtonActionPerformed
 
     private void rButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.userItem("R");
     }//GEN-LAST:event_rButtonActionPerformed
 
     private void wButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.userItem("W");
     }//GEN-LAST:event_wButtonActionPerformed
 
     private void eButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.userItem("E");
     }//GEN-LAST:event_eButtonActionPerformed
-
-
+    
+    public void updateEnemy(String name, String health) {
+        this.enemyNameLabel.setText(name);
+        this.enemyHealthLabel.setText(health);
+    }
+    
+    public void updatePlayer(String health) {
+        this.playerHealthLabel.setText(health);
+    }
+    
+    public void updateBattleActionLabel(String text) {
+        this.battleActionLabel.setText(text);
+    }
+    
+    public void updateItemButtions(String[] items) {
+        this.qButton.setText(items[0]);
+        this.wButton.setText(items[1]);
+        this.eButton.setText(items[2]);
+        this.rButton.setText(items[3]);
+    }
+                
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel battleActionLabel;
     private javax.swing.JPanel battleActionPanel;

@@ -1,17 +1,21 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package dungeon_crawl.Panels;
 
-import dungeon_crawl.Controllers.DungeonCrawl;
-
-/*
+/**
+ *
  * @author Kieran
  */
-public class GameCompletedPanel extends javax.swing.JPanel {
+public class EnemyKilledPanel extends javax.swing.JPanel {
 
-    DungeonCrawl dungeonCrawl;
-    
-    public GameCompletedPanel(DungeonCrawl dungeonCrawl) {
+    /**
+     * Creates new form EnemyKilledPanel
+     */
+    public EnemyKilledPanel() {
         initComponents();
-        this.dungeonCrawl = dungeonCrawl;
     }
 
     /**
@@ -25,10 +29,10 @@ public class GameCompletedPanel extends javax.swing.JPanel {
 
         gameTitleLabel = new javax.swing.JLabel();
         gameLevelCompletedLabel = new javax.swing.JLabel();
-        mainMenuButton = new javax.swing.JButton();
+        continueButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
         timeTakenLabel = new javax.swing.JLabel();
-        levelTimesLabel = new javax.swing.JLabel();
+        characterResetLabel = new javax.swing.JLabel();
 
         gameTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         gameTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -36,13 +40,14 @@ public class GameCompletedPanel extends javax.swing.JPanel {
 
         gameLevelCompletedLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         gameLevelCompletedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        gameLevelCompletedLabel.setText("GAME COMPLETED!");
+        gameLevelCompletedLabel.setText("YOU KILLED [ENEMY]!");
 
-        mainMenuButton.setText("MAIN MENU");
-        mainMenuButton.setPreferredSize(new java.awt.Dimension(120, 40));
-        mainMenuButton.addActionListener(new java.awt.event.ActionListener() {
+        continueButton.setText("CONTINUE");
+        continueButton.setToolTipText("");
+        continueButton.setPreferredSize(new java.awt.Dimension(120, 40));
+        continueButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mainMenuButtonActionPerformed(evt);
+                continueButtonActionPerformed(evt);
             }
         });
 
@@ -56,11 +61,11 @@ public class GameCompletedPanel extends javax.swing.JPanel {
 
         timeTakenLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         timeTakenLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        timeTakenLabel.setText("FINAL TIME: ## MINUTES AND ## SECONDS");
+        timeTakenLabel.setText("REWARD: [ITEM]");
 
-        levelTimesLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        levelTimesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        levelTimesLabel.setText("<html>\nLEVEL 1 TIME: ## MINUTES AND ## SECONDS\n<br>\nLEVEL 2 TIME: ## MINUTES AND ## SECONDS\n<br>\nLEVEL 3 TIME: ## MINUTES AND ## SECONDS\n</html>\n");
+        characterResetLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        characterResetLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        characterResetLabel.setText("YOU HAVE BEEN HEALED!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -68,13 +73,13 @@ public class GameCompletedPanel extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
-                .addComponent(mainMenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(98, 98, 98))
             .addComponent(gameTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(gameLevelCompletedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(levelTimesLabel, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(characterResetLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(timeTakenLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -82,39 +87,34 @@ public class GameCompletedPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(gameTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(55, 55, 55)
                 .addComponent(gameLevelCompletedLabel)
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addComponent(timeTakenLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(levelTimesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(characterResetLabel)
+                .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(mainMenuButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(65, 65, 65))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void mainMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mainMenuButtonActionPerformed
-        this.dungeonCrawl.openMainMenu();
-    }//GEN-LAST:event_mainMenuButtonActionPerformed
+    private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_continueButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        //Game is saved when this screen is shown so no need to save again
-        System.exit(0);
+        // TODO add your handling code here:
     }//GEN-LAST:event_quitButtonActionPerformed
 
-    public void updateText(String finalTime, String levelTimes) {
-        this.timeTakenLabel.setText("FINAL TIME: " + finalTime);
-        this.levelTimesLabel.setText(levelTimes);
-    }
-            
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel characterResetLabel;
+    private javax.swing.JButton continueButton;
     private javax.swing.JLabel gameLevelCompletedLabel;
     private javax.swing.JLabel gameTitleLabel;
-    private javax.swing.JLabel levelTimesLabel;
-    private javax.swing.JButton mainMenuButton;
     private javax.swing.JButton quitButton;
     private javax.swing.JLabel timeTakenLabel;
     // End of variables declaration//GEN-END:variables

@@ -1,7 +1,6 @@
 package dungeon_crawl.Controllers;
 
 import dungeon_crawl.Board;
-import dungeon_crawl.BoardScreen;
 import dungeon_crawl.Door;
 import dungeon_crawl.Levels.LevelOne;
 import dungeon_crawl.Levels.LevelThree;
@@ -9,13 +8,9 @@ import dungeon_crawl.Levels.LevelTwo;
 import dungeon_crawl.Levels.Level;
 import dungeon_crawl.Items.Item;
 import dungeon_crawl.Enemies.Enemy;
-import dungeon_crawl.GameCompletedScreen;
 import dungeon_crawl.GameObject;
-import dungeon_crawl.Utilities.InputHandler;
-import dungeon_crawl.Utilities.ItemNameLookUp;
 import dungeon_crawl.ItemReplacer;
 import dungeon_crawl.Leaderboard;
-import dungeon_crawl.LevelCompletedScreen;
 import dungeon_crawl.Player;
 import dungeon_crawl.PlayerPosition;
 import dungeon_crawl.Utilities.TimeManager;
@@ -32,10 +27,12 @@ public class GameController {
     private final Board board = new Board();
     //Levels
     private ArrayList<Level> levels;
-    //Player item name lookup
-    private final ItemNameLookUp itemNameLookUp = new ItemNameLookUp();
     //Time manager
     private TimeManager timeManager;
+    //View controller
+    private DungeonCrawl dungeonCrawl;
+    //Battle controller
+    private BattleController battleController;
     
     //Used for new game
     public GameController(Player player) {
@@ -70,37 +67,7 @@ public class GameController {
     
     public boolean loadGame() {
         //Try to load the player and the board
-        boolean errorFoundPlayer = loadPlayer();
-        boolean errorFoundBoard = this.board.loadBoard();
-        
-        if (errorFoundPlayer && errorFoundBoard) {
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| ERROR FOUND WHILE LOADING                 |");
-            System.out.println("#-------------------------------------------#");
-        } else if (errorFoundBoard == true) {
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| ERROR FOUND IN BOARD DATA                 |");
-            System.out.println("#-------------------------------------------#");
-        } else if (errorFoundPlayer == true) {
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| ERROR FOUND IN PLAYER DATA                |");
-            System.out.println("#-------------------------------------------#");
-        } else {
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| GAME LOADED                               |");
-            System.out.println("#-------------------------------------------#");
-        }
-        System.out.println("| PRESS ENTER TO CONTINUE                   |");
-        System.out.println("#-------------------------------------------#");
-        
-        //Wait for enter key
-        new InputHandler().getEnterKey();
-        
-       return !errorFoundPlayer && !errorFoundBoard; //Both have to be false to return true
+        return !loadPlayer() && !this.board.loadBoard(); //Both have to be false to return true
     }
     
     public void saveGame() {
@@ -134,87 +101,99 @@ public class GameController {
         return errorFound;
     }
     
-    public void gameLoop() {
-        while (true) {
-            //Start timer
-            this.timeManager = new TimeManager();
-            
-            //Call the game play
-            levelGamePlay();
-            
-            //Stop timer - Add to the time so loaded times count towards the final time
-            int time = updateCurrentTime();
-            
-            //Add level time to completed level times list
-            this.player.getPlayerData().setLevelTime(this.player.getCurrentLevel() - 1, time);
-            
-            //Display level completed screen
-            String levelTimeAsString = TimeManager.convertSecondToStringTime(time);
-            new LevelCompletedScreen(this.player.getCurrentLevel(), levelTimeAsString).displayScreen();
-            
-            //Wait for enter key
-            new InputHandler().getEnterKey();
-            
-            //Check if the final level just got completed
-            if (this.player.getCurrentLevel() == 3) {
-                gameCompleted();
-                break;
+    public void gameLogic(DungeonCrawl dc) {
+        //Assign view controller reference
+        this.dungeonCrawl = dc;
+        
+        //Start timer
+        this.timeManager = new TimeManager();
+        
+        //Place player on the board
+        this.board.setCell(this.player.getPlayerPosition().getRow(), this.player.getPlayerPosition().getCol(), this.player);
+        
+        //Update board
+        displayBoard();
+        
+        //Update level text
+        this.dungeonCrawl.getViewController().getGamePanel().updateLevelLabel("LEVEL " + this.player.getCurrentLevel());
+    }
+    
+    private void displayBoard() {
+        this.dungeonCrawl.getViewController().getGamePanel().updateGrid(this.board.displayBoard());
+    }
+    
+    public void playerMoveAction(String dir) {
+        //Move player
+        PlayerPosition currentPlayerPos = this.player.getPlayerPosition();
+        GameObject objectInCell = movePlayer(dir);
+        boolean updateBoard = true;
+        if (objectInCell != null) {
+            if (objectInCell instanceof Enemy) { //Check if its an enemy to fight
+                //Save game before fight in case of quitting during fight
+                updateCurrentTime();
+                saveGame();                
+                //Start fight
+                this.battleController = new BattleController(currentPlayerPos, this.dungeonCrawl);
+                this.battleController.startBattle((Enemy) objectInCell, player);
+                
+            } else if (objectInCell instanceof Item) { //Check if its an item to pick up
+                //Replace item
+                
+                
+                new ItemReplacer().startItemReplacing((Item) objectInCell, this.player);
+                
+                
+                displayBoard();
+            } else if (objectInCell instanceof Door) { //Check if its the door to finish the level
+                //Complete level as the player has finished the level
+                completeLevel();
+                updateBoard = false;
             }
-            
-            //Increase current level
-            this.player.setCurrentLevel(this.player.getCurrentLevel() + 1);
-            
-            //Set up next level
-            setUpLevel(this.player.getCurrentLevel() - 1);
-            
-            //Reset player
-            this.player.resetPlayer();
+        }
+        
+        //Everything BUT landing on a door can update the screen
+        if (updateBoard == true) {
+            displayBoard();
         }
     }
     
-    private void levelGamePlay(){
-        //Place the player on the board
-        this.board.setCell(this.player.getPlayerPosition().getRow(), this.player.getPlayerPosition().getCol(), this.player);
-        BoardScreen boardScreen = new BoardScreen(this.board, this.player.getCurrentLevel());
-        while (true) {
-            //Display the grid
-            boardScreen.displayScreen();
-            
-            //Get game input
-            InputHandler gameInput = new InputHandler(new String[] {"W", "A", "S", "D", "Q"});
-            String input = gameInput.getInput();
-            
-            if (input.equals("Q")) {
-                //Update current time
-                updateCurrentTime();
-                //Quit program
-                saveGame();
-                System.exit(0);
-            } else {
-                //Move player
-                PlayerPosition currentPlayerPos = this.player.getPlayerPosition();
-                GameObject objectInCell = movePlayer(input);
-                if (objectInCell != null) {
-                    if (objectInCell instanceof Enemy) { //Check if its an enemy to fight
-                        BattleController battleController = new BattleController();
-                        if (battleController.battle((Enemy) objectInCell, player)) {
-                            //Player won
-                        } else {
-                            //Player lost, reset enemy and move player back
-                            this.board.setCell(this.player.getPlayerPosition(), objectInCell);
-                            this.board.setCell(currentPlayerPos, this.player);
-                            this.player.setPlayerPosition(currentPlayerPos);
-                        }
-                    } else if (objectInCell instanceof Item) { //Check if its an item to pick up
-                        //Replace item
-                        new ItemReplacer().startItemReplacing((Item) objectInCell, this.player);
-                    } else if (objectInCell instanceof Door) { //Check if its the door to finish the level
-                        //Break the game loop as the the player has finished the level
-                        break;
-                    }
-                }
-            }
-        }
+    public void movePlayerBack(GameObject objectInCell, PlayerPosition currentPlayerPos) {
+        //Player lost, reset enemy and move player back
+        Enemy enemyInCell = (Enemy)objectInCell;
+        enemyInCell.resetEnemy();
+        this.board.setCell(this.player.getPlayerPosition(), enemyInCell);
+        this.board.setCell(currentPlayerPos, this.player);
+        this.player.setPlayerPosition(currentPlayerPos);
+        displayBoard();
+    }
+    
+    private void completeLevel() {
+        //Stop timer - Add to the time so loaded times count towards the final time
+        int time = updateCurrentTime();
+
+        //Add level time to completed level times list
+        this.player.getPlayerData().setLevelTime(this.player.getCurrentLevel() - 1, time);
+
+        //Display level completed screen
+        String levelTimeAsString = TimeManager.convertSecondToStringTime(time);
+        
+        //Show level completed panel
+        this.dungeonCrawl.getViewController().switchPanels(ViewController.Panel.LEVELCOMPLETED);
+        
+        //Update text on level completed panel
+        this.dungeonCrawl.getViewController().getLevelCompletedPanel().updateText("LEVEL " + this.player.getCurrentLevel() + " COMPLETED!", levelTimeAsString);
+        
+        //Increase current level
+        this.player.setCurrentLevel(this.player.getCurrentLevel() + 1);
+
+        //Set up next level
+        setUpLevel(this.player.getCurrentLevel() - 1);
+
+        //Reset player
+        this.player.resetPlayer();
+        
+        //Save game
+        saveGame();
     }
     
     private boolean tryToMovePlayer(String direction){
@@ -257,23 +236,18 @@ public class GameController {
             int oldCol = this.player.getPlayerPosition().getCol();
             int newRow = oldRow;
             int newCol = oldCol;
-            String outputText = "| PLAYER MOVED";
             switch (direction) {
                 case "W": //Move up
                     newRow = oldRow - 1;
-                    outputText +=  " FORWARD                      |";
                     break;
                 case "A": //Move left
                     newCol = oldCol - 1;
-                    outputText +=  " LEFT                         |";
                     break;
                 case "S": //Move down
                     newRow = oldRow + 1;
-                    outputText +=  " DOWNWARDS                    |";
                     break;
                 case "D": //Move right
                     newCol = oldCol + 1;
-                    outputText +=  " RIGHT                        |";
                     break;
             }
             if (this.board.getCell(newRow, newCol) != null) {
@@ -283,28 +257,21 @@ public class GameController {
             this.board.updatePlayerLocation(newRow, newCol, player);
             //Update the player
             this.player.setPlayerPosition(new PlayerPosition(newRow, newCol));
-            
-            //Print the movement message
-            System.out.println("#-------------------------------------------#");
-            System.out.println(outputText);
-            System.out.println("#-------------------------------------------#");
         } else {
-            //Print the cannot move message
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| YOU CANNOT MOVE THERE!                    |");
-            System.out.println("#-------------------------------------------#");
+            //Cannot move message
         }
         return gameObjectToReturn;
     }
 
-    private void gameCompleted() {
+    public void gameCompleted() {
         //Convert the seconds of each level completed time into string time
-        String[] stringLevelTimes = new String[this.player.getPlayerData().getLevelTimes().length];
+        String stringLevelTimes = "<html>";
         int finalTime = 0;
-        for (int i = 0; i < stringLevelTimes.length; i++) {
-            stringLevelTimes[i] = TimeManager.convertSecondToStringTime(this.player.getPlayerData().getLevelTime(i));
+        for (int i = 0; i < this.player.getPlayerData().getLevelTimes().length; i++) {
+            stringLevelTimes += "LEVEL " + (i + 1) + " TIME: " + TimeManager.convertSecondToStringTime(this.player.getPlayerData().getLevelTime(i)) + "<br>";
             finalTime += this.player.getPlayerData().getLevelTime(i); //Final time
         }
+        stringLevelTimes += "</html>";
 
         //Add the final time to the PlayerData
         this.player.getPlayerData().setFinalTime(finalTime);
@@ -313,20 +280,29 @@ public class GameController {
         Leaderboard lb = new Leaderboard();
         lb.tryToAdd(this.player.getPlayerData());
         
-        //Convert final time from int to string time (formated time eg. 5:03)
-        String finalTimeAsString = TimeManager.convertSecondToStringTime(this.player.getPlayerData().getFinalTime());
-        new GameCompletedScreen(finalTimeAsString, stringLevelTimes).displayScreen();
+        //Delete current user data from database
+        //TODO: DB
         
-        //Wait for enter key
-        new InputHandler().getEnterKey();
+        //Convert final time from int to string time (formated time eg. 5 minutes and 3 seconds)
+        String finalTimeAsString = TimeManager.convertSecondToStringTime(this.player.getPlayerData().getFinalTime());
+        
+        this.dungeonCrawl.getViewController().getGameCompletedPanel().updateText(finalTimeAsString, stringLevelTimes);
     }
     
-    private int updateCurrentTime () {
+    public int updateCurrentTime () {
         int time = -1;
         if (this.timeManager != null) {
             time = this.player.getCurrentLevelTime() + this.timeManager.timeFinished();
             this.player.setCurrentLevelTime(time);
         }
         return time;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+    
+    public BattleController getBattleController() {
+        return this.battleController;
     }
 }

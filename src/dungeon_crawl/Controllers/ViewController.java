@@ -35,7 +35,7 @@ public class ViewController extends JFrame {
         this.startPanel.setVisible(true);
         add(this.startPanel);*/
         
-        add(new NewGamePanel());
+        add(new GamePanel());
     }
     
     

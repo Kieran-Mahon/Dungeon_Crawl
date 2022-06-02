@@ -44,10 +44,6 @@ public class IOController {
         }
         
         if (errorFound == false) {
-            //Object look ups (using a HashMap)
-            EnemyNameLookUp enemyNameLookUp = new EnemyNameLookUp();
-            ItemNameLookUp itemNameLookUp = new ItemNameLookUp();
-            
             GameObject[][] newGrid = new GameObject[7][11];
             int row = 0;
             
@@ -69,7 +65,7 @@ public class IOController {
                             switch (type) {
                                 case 'E':
                                     //Enemy
-                                    Enemy enemyToAdd = enemyNameLookUp.getItem(cells[col].substring(1));
+                                    Enemy enemyToAdd = EnemyNameLookUp.getItem(cells[col].substring(1));
                                     if (enemyToAdd != null) {
                                         newGrid[row][col] = enemyToAdd;
                                     } else {
@@ -78,7 +74,7 @@ public class IOController {
                                     break;
                                 case 'I':
                                     //Item
-                                    Item itemToAdd = itemNameLookUp.getItem(cells[col].substring(1));
+                                    Item itemToAdd = ItemNameLookUp.getItem(cells[col].substring(1));
                                     if (itemToAdd != null) {
                                         newGrid[row][col] = itemToAdd;
                                     } else {
@@ -108,7 +104,7 @@ public class IOController {
         return gridToReturn;
     }
 
-    public static void saveBoard(GameObject[][] grid) {
+    public static boolean saveBoard(GameObject[][] grid) {
         ArrayList<String> toWrite = new ArrayList<>();        
         //Add grid to the array list row by row
         for (int row = 0; row < grid.length; row++) {
@@ -144,11 +140,9 @@ public class IOController {
             //Close writer
             pw.close();
         } catch (FileNotFoundException e) {
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| ERROR FOUND WHILE SAVING THE BOARD        |");
-            System.out.println("#-------------------------------------------#");
+            return false;
         }
+        return true;
     }
 
     public static Player loadPlayer() {
@@ -335,7 +329,6 @@ public class IOController {
             //Holder variables
             
             ArrayList<Item> items = new ArrayList<>();
-            ItemNameLookUp itemNameLookUp = new ItemNameLookUp();
             
             //Loop to get the data out of fileContents and put the items in the temp
             //player items list. Also change the error variable if an issue is found
@@ -345,7 +338,7 @@ public class IOController {
                     break;
                 }
                 //Check if item exists
-                Item toAdd = itemNameLookUp.getItem(line.toUpperCase()); //Returns null if item does not exist
+                Item toAdd = ItemNameLookUp.getItem(line.toUpperCase()); //Returns null if item does not exist
                 if (toAdd != null) {
                    items.add(toAdd);
                 } else {

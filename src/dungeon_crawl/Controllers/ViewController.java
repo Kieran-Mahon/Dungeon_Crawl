@@ -19,24 +19,28 @@ public class ViewController extends JFrame {
         ITEMPICKUP,
         LEADERBOARD,
         ERRORLOADING,
+        ERRORSAVING,
         LEVELCOMPLETED,
         NEWGAME,
+        PLAYERDIED,
         START
     }
     
     //Reference to dungeon crawl
-    public DungeonCrawl dungeonCrawl;
+    private final DungeonCrawl dungeonCrawl;
     
     //Panels
     private BattlePanel battlePanel;
     private EnemyKilledPanel enemyKilledPanel;
     private ErrorLoadingPanel errorLoadingPanel;
+    private ErrorSavingPanel errorSavingPanel;
     private GameCompletedPanel gameCompletedPanel;
     private GamePanel gamePanel;
     private ItemPickUpPanel itemPickUpPanel;
     private LeaderboardPanel leaderboardPanel;
     private LevelCompletedPanel levelCompletedPanel;
     private NewGamePanel newGamePanel;
+    private PlayerDiedPanel playerDiedPanel;
     private StartPanel startPanel;
     
     //Reference to the current panel
@@ -49,7 +53,7 @@ public class ViewController extends JFrame {
         this.dungeonCrawl = newDungeonCrawl;
         //Set up frame
         this.setSize(600, 400);
-        //this.setResizable(false);
+        this.setResizable(false);
         this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         //Set up panels
         initComponents();
@@ -62,37 +66,44 @@ public class ViewController extends JFrame {
     private void initComponents() {
         //Add all the panels
         battlePanel = new BattlePanel(dungeonCrawl);
-        enemyKilledPanel = new EnemyKilledPanel();
+        enemyKilledPanel = new EnemyKilledPanel(dungeonCrawl);
         errorLoadingPanel = new ErrorLoadingPanel(dungeonCrawl);
+        errorSavingPanel = new ErrorSavingPanel();
         gameCompletedPanel = new GameCompletedPanel(dungeonCrawl);
         gamePanel = new GamePanel(dungeonCrawl);
-        itemPickUpPanel = new ItemPickUpPanel();
+        itemPickUpPanel = new ItemPickUpPanel(dungeonCrawl);
         leaderboardPanel = new LeaderboardPanel(dungeonCrawl);
         levelCompletedPanel = new LevelCompletedPanel(dungeonCrawl);
         newGamePanel = new NewGamePanel(dungeonCrawl);
+        playerDiedPanel = new PlayerDiedPanel(dungeonCrawl);
         startPanel = new StartPanel(dungeonCrawl);
         
         add(battlePanel);
         add(enemyKilledPanel);
         add(errorLoadingPanel);
+        add(errorSavingPanel);
         add(gameCompletedPanel);
         add(gamePanel);
         add(itemPickUpPanel);
         add(leaderboardPanel);
         add(levelCompletedPanel);
         add(newGamePanel);
+        add(playerDiedPanel);
         add(startPanel);
         
         battlePanel.setVisible(false);
         enemyKilledPanel.setVisible(false);
         errorLoadingPanel.setVisible(false);
+        errorSavingPanel.setVisible(false);
         gameCompletedPanel.setVisible(false);
         gamePanel.setVisible(false);
         itemPickUpPanel.setVisible(false);
         leaderboardPanel.setVisible(false);
         levelCompletedPanel.setVisible(false);
+        playerDiedPanel.setVisible(false);
         newGamePanel.setVisible(false);
         
+        //Set current panel
         currentPanel = startPanel;
     }
     
@@ -106,6 +117,12 @@ public class ViewController extends JFrame {
             case ENEMYKILLED:
                 newPanel = enemyKilledPanel;
                 break;
+            case ERRORLOADING:
+                newPanel = errorLoadingPanel;
+                break;
+            case ERRORSAVING:
+                newPanel = errorSavingPanel;
+                break;
             case GAMECOMPLETED:
                 newPanel = gameCompletedPanel;
                 break;
@@ -118,11 +135,11 @@ public class ViewController extends JFrame {
             case LEADERBOARD:
                 newPanel = leaderboardPanel;
                 break;
-            case ERRORLOADING:
-                newPanel = errorLoadingPanel;
-                break;
             case LEVELCOMPLETED:
                 newPanel = levelCompletedPanel;
+                break;
+            case PLAYERDIED:
+                newPanel = playerDiedPanel;
                 break;
             case NEWGAME:
                 newPanel = newGamePanel;
@@ -165,19 +182,23 @@ public class ViewController extends JFrame {
         return errorLoadingPanel;
     }
 
+    public ErrorSavingPanel getErrorSavingPanel() {
+        return errorSavingPanel;
+    }
+    
     public LevelCompletedPanel getLevelCompletedPanel() {
         return levelCompletedPanel;
     }
 
+    public PlayerDiedPanel getPlayerDiedPanel() {
+        return playerDiedPanel;
+    }
+    
     public NewGamePanel getNewGamePanel() {
         return newGamePanel;
     }
 
     public StartPanel getStartPanel() {
         return startPanel;
-    }
-
-    public JPanel getCurrentPanel() {
-        return currentPanel;
     }
 }

@@ -18,7 +18,7 @@ public class Dragon extends Enemy {
     }
     
     @Override
-    public void attack(Player player) {
+    public Item attack(Player player) {
         Random rand = new Random();
         int rndNum = rand.nextInt(9); //0 to 9 (10 values)
         Item attackItem = null;
@@ -32,5 +32,7 @@ public class Dragon extends Enemy {
         
         //Attack the player
         this.useItem(attackItem, player);
+        
+        return attackItem;
     }
 }

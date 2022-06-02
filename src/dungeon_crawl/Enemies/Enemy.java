@@ -2,9 +2,7 @@ package dungeon_crawl.Enemies;
 
 import dungeon_crawl.GameObject;
 import dungeon_crawl.Items.Item;
-import dungeon_crawl.ItemUsedScreen;
 import dungeon_crawl.Player;
-import dungeon_crawl.StunnedScreen;
 import java.util.ArrayList;
 
 /*
@@ -82,19 +80,6 @@ public abstract class Enemy implements GameObject {
         //Enemy effects
         heal(item.getHeal());
         this.blocking = item.getCanBlock();
-        
-        //Show the item used screen
-        new ItemUsedScreen(this.name, item, false).displayScreen();
-        
-        //Show stun message if player is stunned
-        if (player.getStunTime() != 0) {
-            //Display the stun screen
-            new StunnedScreen().displayScreen();
-        }
-        
-        //Show the enter to continue message
-        System.out.println("| PRESS ENTER TO CONTINUE                   |");
-        System.out.println("#-------------------------------------------#");
     }
     
     @Override
@@ -114,7 +99,7 @@ public abstract class Enemy implements GameObject {
         return this.attacks.get(index);
     }
     
-    abstract public void attack(Player player);
+    abstract public Item attack(Player player);
     
     @Override
     public String getGridName() {

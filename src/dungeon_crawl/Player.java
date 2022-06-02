@@ -145,9 +145,6 @@ public class Player implements GameObject {
         //Player effects
         heal(item.getHeal());
         this.blocking = item.getCanBlock();
-        
-        //Show the item used screen
-        new ItemUsedScreen("YOU", item, true).displayScreen();
     }
     
     public void resetPlayer() {

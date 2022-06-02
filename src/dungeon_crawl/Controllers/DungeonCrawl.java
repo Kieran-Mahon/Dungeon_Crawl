@@ -1,12 +1,9 @@
 package dungeon_crawl.Controllers;
 
-import dungeon_crawl.Utilities.InputHandler;
+import dungeon_crawl.Items.Item;
 import dungeon_crawl.Leaderboard;
-import dungeon_crawl.LeaderboardScreen;
-import dungeon_crawl.NewGameScreen;
 import dungeon_crawl.Player;
 import dungeon_crawl.PlayerData;
-import dungeon_crawl.StartScreen;
 
 /*
  * @author Kieran
@@ -58,10 +55,12 @@ public class DungeonCrawl {
     public ViewController getViewController() {
         return this.viewController;
     }
+
+    public GameController getGameController() {
+        return this.gameController;
+    }
     
     public void saveGameInGrid() {
-        //Update current time
-        this.gameController.updateCurrentTime();
         //Save game
         this.gameController.saveGame();
         //Quit program
@@ -82,9 +81,34 @@ public class DungeonCrawl {
     
     public void userItem(String key) {
         BattleController bc = this.gameController.getBattleController();
-        if (bc.enemyTurn == false) {
+        if (bc.getPlayersTurn() == true) {
             bc.playerAttack(key);
         }
+    }
+    
+    public void enemyKilled() {
+        if (this.gameController.getBattleController().getEnemy().getReward() != null) {
+            //Item already set
+            this.gameController.updateItemPickupPanelDisplay();
+            this.viewController.switchPanels(ViewController.Panel.ITEMPICKUP);
+        } else {
+            this.viewController.switchPanels(ViewController.Panel.GAME);
+            this.gameController.displayBoard();
+        }
+    }
+    
+    public void collectItem(int slot) {
+        if (slot != -1) {
+            Item.startItemReplacing(slot, this.gameController.getItemToBeCollected(), this.gameController.getPlayer());
+        }
+        this.viewController.switchPanels(ViewController.Panel.GAME);
+        this.gameController.displayBoard();
+    }
+    
+    public void playerDied() {
+        BattleController bc = this.gameController.getBattleController();
+        this.gameController.movePlayerBack(bc.getEnemy(), bc.getLastPlayerPos());
+        this.viewController.switchPanels(ViewController.Panel.GAME);
     }
     
     public static void main(String[] args) {

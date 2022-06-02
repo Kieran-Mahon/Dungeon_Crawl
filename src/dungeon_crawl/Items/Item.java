@@ -1,6 +1,7 @@
 package dungeon_crawl.Items;
 
 import dungeon_crawl.GameObject;
+import dungeon_crawl.Player;
 
 /*
  * @author Kieran
@@ -52,8 +53,11 @@ public class Item implements GameObject {
         return this.name;
     }
     
-    public String getInfo() {
-        String toReturn = "<html><b>" + this.name + "</b><br>";
+    public String getInfo(boolean nameWanted) {
+        String toReturn = "<html>";
+        if (nameWanted == true) {
+            toReturn += "<b>" + this.name + "</b><br>";
+        }
         if (this.damage > 0) {
             toReturn += this.damage + " DAMAGE<br>";
         }
@@ -68,5 +72,14 @@ public class Item implements GameObject {
         }
         
         return (toReturn + "</html>");
+    }
+    
+    public static boolean startItemReplacing(int slot, Item newItem, Player player) {
+        if (slot != -1) {
+            //Replace item
+            player.setItem(slot, newItem);
+            return true;
+        }
+        return false;
     }
 }

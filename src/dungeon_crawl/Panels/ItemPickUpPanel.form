@@ -11,6 +11,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,-112,0,0,2,88"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
@@ -53,7 +54,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="quitButton" alignment="1" max="32767" attributes="0"/>
-                      <Component id="qButton1" alignment="0" max="32767" attributes="0"/>
+                      <Component id="qButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="rButton" alignment="1" max="32767" attributes="0"/>
                       <Component id="wButton" alignment="1" max="32767" attributes="0"/>
                       <Component id="eButton" alignment="0" max="32767" attributes="0"/>
@@ -67,7 +68,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="qButton1" min="-2" max="-2" attributes="0"/>
+                  <Component id="qButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="wButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -84,12 +85,12 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="qButton1">
+        <Component class="javax.swing.JButton" name="qButton">
           <Properties>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;&#xa;&lt;b&gt;[ITEM NAME]&lt;/b&gt;&#xa;&lt;br&gt;&#xa;# DMG&#xa;&lt;br&gt;&#xa;+# HEALTH&#xa;&lt;br&gt;&#xa;# TURN STUN&#xa;&lt;/html&gt;&#xa;&#xa;"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="qButton1ActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="qButtonActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="wButton">

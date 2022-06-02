@@ -106,8 +106,8 @@ public class LevelCompletedPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_quitButtonActionPerformed
     
     public void updateText(String level, String time) {
-        this.gameLevelCompletedLabel.setText("LEVEL " + level + " COMPLETED!");
-        this.timeTakenLabel.setText("TIME TAKEN: " + time);
+        this.gameLevelCompletedLabel.setText(level);
+        this.timeTakenLabel.setText(time);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

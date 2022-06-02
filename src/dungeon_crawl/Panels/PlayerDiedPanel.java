@@ -1,24 +1,17 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dungeon_crawl.Panels;
 
 import dungeon_crawl.Controllers.DungeonCrawl;
 
-/**
- *
+/*
  * @author Kieran
  */
-public class EnemyKilledPanel extends javax.swing.JPanel {
+public class PlayerDiedPanel extends javax.swing.JPanel {
 
     private DungeonCrawl dungeonCrawl;
     
-    public EnemyKilledPanel(DungeonCrawl dungeonCrawl) {
+    public PlayerDiedPanel(DungeonCrawl dungeonCrawl) {
         initComponents();
         this.dungeonCrawl = dungeonCrawl;
-        this.rewardLabel.setVisible(false);
     }
 
     /**
@@ -31,19 +24,19 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         gameTitleLabel = new javax.swing.JLabel();
-        enemyKilledLabel = new javax.swing.JLabel();
+        youDiedLabel = new javax.swing.JLabel();
         continueButton = new javax.swing.JButton();
         quitButton = new javax.swing.JButton();
-        rewardLabel = new javax.swing.JLabel();
-        healthResetLabel = new javax.swing.JLabel();
+        youDiedInfo1Label = new javax.swing.JLabel();
+        youDiedInfo2Label = new javax.swing.JLabel();
 
         gameTitleLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         gameTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         gameTitleLabel.setText("DUNGEON CRAWL");
 
-        enemyKilledLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        enemyKilledLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        enemyKilledLabel.setText("YOU KILLED [ENEMY]!");
+        youDiedLabel.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        youDiedLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        youDiedLabel.setText("YOU DIED!");
 
         continueButton.setText("CONTINUE");
         continueButton.setToolTipText("");
@@ -62,13 +55,13 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
             }
         });
 
-        rewardLabel.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        rewardLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        rewardLabel.setText("REWARD: [ITEM]");
+        youDiedInfo1Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        youDiedInfo1Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        youDiedInfo1Label.setText("YOU HAVE BEEN HEALED!");
 
-        healthResetLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        healthResetLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        healthResetLabel.setText("YOU HAVE BEEN HEALED!");
+        youDiedInfo2Label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        youDiedInfo2Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        youDiedInfo2Label.setText("YOU HAVE BEEN MOVED BACK TO THE LAST LOCATION");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -77,13 +70,13 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(98, 98, 98)
                 .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                 .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(98, 98, 98))
             .addComponent(gameTitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(enemyKilledLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(healthResetLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(rewardLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
+            .addComponent(youDiedLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(youDiedInfo2Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(youDiedInfo1Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,12 +84,12 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
                 .addGap(29, 29, 29)
                 .addComponent(gameTitleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(55, 55, 55)
-                .addComponent(enemyKilledLabel)
-                .addGap(18, 18, 18)
-                .addComponent(rewardLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(healthResetLabel)
-                .addGap(42, 42, 42)
+                .addComponent(youDiedLabel)
+                .addGap(58, 58, 58)
+                .addComponent(youDiedInfo1Label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(youDiedInfo2Label)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(continueButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(quitButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -105,7 +98,7 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void continueButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_continueButtonActionPerformed
-        this.dungeonCrawl.enemyKilled();
+        this.dungeonCrawl.playerDied();
     }//GEN-LAST:event_continueButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
@@ -113,22 +106,13 @@ public class EnemyKilledPanel extends javax.swing.JPanel {
         System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
 
-    public void updateLabels(String enemyName, String reward) {
-        this.enemyKilledLabel.setText(enemyName);
-        if (reward.isEmpty() == false) {
-            this.rewardLabel.setVisible(true);
-            this.rewardLabel.setText(reward);
-        } else {
-            this.rewardLabel.setVisible(false);
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton continueButton;
-    private javax.swing.JLabel enemyKilledLabel;
     private javax.swing.JLabel gameTitleLabel;
-    private javax.swing.JLabel healthResetLabel;
     private javax.swing.JButton quitButton;
-    private javax.swing.JLabel rewardLabel;
+    private javax.swing.JLabel youDiedInfo1Label;
+    private javax.swing.JLabel youDiedInfo2Label;
+    private javax.swing.JLabel youDiedLabel;
     // End of variables declaration//GEN-END:variables
 }

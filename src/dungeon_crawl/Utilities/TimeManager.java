@@ -11,7 +11,7 @@ public class TimeManager {
         this.timeStart = (int) System.currentTimeMillis() / 1000;
     }
     
-    public int timeFinished(){
+    public int timePlayed(){
         return ((int) System.currentTimeMillis() / 1000) - this.timeStart;
     }
     

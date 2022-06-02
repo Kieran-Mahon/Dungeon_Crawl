@@ -12,15 +12,8 @@ import java.util.HashMap;
  */
 public class EnemyNameLookUp {
 
-    //All items the player can get
-    private final HashMap<String, Enemy> enemies;
-
-    public EnemyNameLookUp() {
-        this.enemies = loadEnemies();
-    }
-    
     //Set up the list of items the player can use
-    private HashMap<String, Enemy> loadEnemies() {
+    private static HashMap<String, Enemy> loadEnemies() {
         HashMap<String, Enemy> tempEnemies = new HashMap<>();
         //Enemies
         tempEnemies.put("WOLF", new Wolf());
@@ -32,11 +25,14 @@ public class EnemyNameLookUp {
         return tempEnemies;
     }
     
-    public Enemy getItem(String key) {
+    public static Enemy getItem(String key) {
+        //Make new map
+        HashMap<String, Enemy> enemies = loadEnemies();
+        
         //Check if the key exists
-        if (this.enemies.containsKey(key)) {
+        if (enemies.containsKey(key)) {
             //Return the item
-            return this.enemies.get(key);   
+            return enemies.get(key);   
         } else {
             //Return null if the key doesn't exist
             return null;

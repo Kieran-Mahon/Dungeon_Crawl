@@ -18,15 +18,8 @@ import java.util.HashMap;
  */
 public class ItemNameLookUp {
     
-    //All items the player can get
-    private final HashMap<String, Item> playerItems;
-
-    public ItemNameLookUp() {
-        this.playerItems = loadItems();
-    }
-    
     //Set up the list of items the player can use
-    private HashMap<String, Item> loadItems() {
+    private static HashMap<String, Item> loadItems() {
         HashMap<String, Item> items = new HashMap<>();
         
         //Used by the player (player can use any type of item if the game gives it to them)
@@ -50,11 +43,14 @@ public class ItemNameLookUp {
         return items;
     }
     
-    public Item getItem(String key) {
+    public static Item getItem(String key) {
+        //Create new map
+        HashMap<String, Item> playerItems = loadItems();
+        
         //Check if the key exists
-        if (this.playerItems.containsKey(key)) {
+        if (playerItems.containsKey(key)) {
             //Return the item
-            return this.playerItems.get(key);   
+            return playerItems.get(key);   
         } else {
             //Return null if the key doesn't exist
             return null;

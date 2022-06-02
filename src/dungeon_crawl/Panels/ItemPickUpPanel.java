@@ -1,21 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dungeon_crawl.Panels;
 
-/**
- *
+import dungeon_crawl.Controllers.DungeonCrawl;
+import dungeon_crawl.Controllers.ViewController;
+import dungeon_crawl.Items.Item;
+
+/*
  * @author Kieran
  */
 public class ItemPickUpPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form ItemPickUpPanel
-     */
-    public ItemPickUpPanel() {
+    private DungeonCrawl dungeonCrawl;
+    
+    public ItemPickUpPanel(DungeonCrawl dungeonCrawl) {
         initComponents();
+        this.dungeonCrawl = dungeonCrawl;
     }
 
     /**
@@ -29,7 +27,7 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
 
         gameTitleLabel = new javax.swing.JLabel();
         sidePanel1 = new javax.swing.JPanel();
-        qButton1 = new javax.swing.JButton();
+        qButton = new javax.swing.JButton();
         wButton = new javax.swing.JButton();
         eButton = new javax.swing.JButton();
         rButton = new javax.swing.JButton();
@@ -49,10 +47,10 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
         sidePanel1.setBackground(new java.awt.Color(200, 200, 200));
         sidePanel1.setPreferredSize(new java.awt.Dimension(150, 400));
 
-        qButton1.setText("<html>\n<b>[ITEM NAME]</b>\n<br>\n# DMG\n<br>\n+# HEALTH\n<br>\n# TURN STUN\n</html>\n\n");
-        qButton1.addActionListener(new java.awt.event.ActionListener() {
+        qButton.setText("<html>\n<b>[ITEM NAME]</b>\n<br>\n# DMG\n<br>\n+# HEALTH\n<br>\n# TURN STUN\n</html>\n\n");
+        qButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                qButton1ActionPerformed(evt);
+                qButtonActionPerformed(evt);
             }
         });
 
@@ -101,7 +99,7 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(sidePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(quitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(qButton1)
+                    .addComponent(qButton)
                     .addComponent(rButton, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(wButton, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(eButton)
@@ -112,7 +110,7 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
             sidePanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sidePanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(qButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(qButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(wButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -145,30 +143,42 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
         add(itemFoundInfoLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 450, 78));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void qButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_qButton1ActionPerformed
+    private void qButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_qButtonActionPerformed
+        this.dungeonCrawl.collectItem(0);
+    }//GEN-LAST:event_qButtonActionPerformed
 
     private void wButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_wButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.collectItem(1);
     }//GEN-LAST:event_wButtonActionPerformed
 
     private void eButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.collectItem(2);
     }//GEN-LAST:event_eButtonActionPerformed
 
     private void rButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.collectItem(3);
     }//GEN-LAST:event_rButtonActionPerformed
 
     private void quitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitButtonActionPerformed
-        // TODO add your handling code here:
+        //No need to save
+        System.exit(0);
     }//GEN-LAST:event_quitButtonActionPerformed
 
     private void dropButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dropButtonActionPerformed
-        // TODO add your handling code here:
+        this.dungeonCrawl.collectItem(-1);
     }//GEN-LAST:event_dropButtonActionPerformed
-
+    public void updateItemButtions(String[] items) {
+        this.qButton.setText(items[0]);
+        this.wButton.setText(items[1]);
+        this.eButton.setText(items[2]);
+        this.rButton.setText(items[3]);
+    }
+    
+    public void updateItemInfo(Item item) {
+        this.itemFoundLabel.setText("YOU FOUND A " + item.getName());
+        this.itemStatsLabel.setText(item.getInfo(false));
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton dropButton;
@@ -178,10 +188,8 @@ public class ItemPickUpPanel extends javax.swing.JPanel {
     private javax.swing.JLabel itemFoundLabel;
     private javax.swing.JLabel itemStatsLabel;
     private javax.swing.JButton qButton;
-    private javax.swing.JButton qButton1;
     private javax.swing.JButton quitButton;
     private javax.swing.JButton rButton;
-    private javax.swing.JPanel sidePanel;
     private javax.swing.JPanel sidePanel1;
     private javax.swing.JButton wButton;
     // End of variables declaration//GEN-END:variables

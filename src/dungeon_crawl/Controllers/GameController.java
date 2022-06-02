@@ -9,8 +9,8 @@ import dungeon_crawl.Levels.Level;
 import dungeon_crawl.Items.Item;
 import dungeon_crawl.Enemies.Enemy;
 import dungeon_crawl.GameObject;
-import dungeon_crawl.ItemReplacer;
 import dungeon_crawl.Leaderboard;
+import dungeon_crawl.Panels.ItemPickUpPanel;
 import dungeon_crawl.Player;
 import dungeon_crawl.PlayerPosition;
 import dungeon_crawl.Utilities.TimeManager;
@@ -33,7 +33,10 @@ public class GameController {
     private DungeonCrawl dungeonCrawl;
     //Battle controller
     private BattleController battleController;
-    
+    //Item to be collected;
+    private Item itemToBeCollected;
+            
+            
     //Used for new game
     public GameController(Player player) {
         //Set up default level templates
@@ -71,11 +74,9 @@ public class GameController {
     }
     
     public void saveGame() {
+        updateCurrentTime();
         if (IOController.savePlayer(this.player) || IOController.savePlayerItems(this.player)) { //Both return true if there is an error
-            System.out.println();
-            System.out.println("#-------------------------------------------#");
-            System.out.println("| ERROR FOUND WHILE SAVING PLAYER DATA      |");
-            System.out.println("#-------------------------------------------#");
+            this.dungeonCrawl.getViewController().switchPanels(ViewController.Panel.ERRORSAVING);
         } else {
             //Only save the board if there are no issues with saving the player
             this.board.saveBoard(); //Error message for saving the board is within its save function
@@ -118,41 +119,33 @@ public class GameController {
         this.dungeonCrawl.getViewController().getGamePanel().updateLevelLabel("LEVEL " + this.player.getCurrentLevel());
     }
     
-    private void displayBoard() {
+    public void displayBoard() {
         this.dungeonCrawl.getViewController().getGamePanel().updateGrid(this.board.displayBoard());
     }
     
     public void playerMoveAction(String dir) {
+        //Save game before moment
+        saveGame();
         //Move player
         PlayerPosition currentPlayerPos = this.player.getPlayerPosition();
         GameObject objectInCell = movePlayer(dir);
-        boolean updateBoard = true;
         if (objectInCell != null) {
             if (objectInCell instanceof Enemy) { //Check if its an enemy to fight
-                //Save game before fight in case of quitting during fight
-                updateCurrentTime();
-                saveGame();                
                 //Start fight
-                this.battleController = new BattleController(currentPlayerPos, this.dungeonCrawl);
-                this.battleController.startBattle((Enemy) objectInCell, player);
+                this.battleController = new BattleController(currentPlayerPos, this.dungeonCrawl,(Enemy) objectInCell, this.player);
                 
             } else if (objectInCell instanceof Item) { //Check if its an item to pick up
                 //Replace item
+                this.itemToBeCollected = (Item) objectInCell;
+                updateItemPickupPanelDisplay();
+                this.dungeonCrawl.getViewController().switchPanels(ViewController.Panel.ITEMPICKUP);
                 
-                
-                new ItemReplacer().startItemReplacing((Item) objectInCell, this.player);
-                
-                
-                displayBoard();
             } else if (objectInCell instanceof Door) { //Check if its the door to finish the level
                 //Complete level as the player has finished the level
                 completeLevel();
-                updateBoard = false;
             }
-        }
-        
-        //Everything BUT landing on a door can update the screen
-        if (updateBoard == true) {
+        } else {
+            //Update board after movement
             displayBoard();
         }
     }
@@ -181,7 +174,7 @@ public class GameController {
         this.dungeonCrawl.getViewController().switchPanels(ViewController.Panel.LEVELCOMPLETED);
         
         //Update text on level completed panel
-        this.dungeonCrawl.getViewController().getLevelCompletedPanel().updateText("LEVEL " + this.player.getCurrentLevel() + " COMPLETED!", levelTimeAsString);
+        this.dungeonCrawl.getViewController().getLevelCompletedPanel().updateText("LEVEL " + this.player.getCurrentLevel() + " COMPLETED!", "TIME TAKEN: " + levelTimeAsString);
         
         //Increase current level
         this.player.setCurrentLevel(this.player.getCurrentLevel() + 1);
@@ -289,10 +282,12 @@ public class GameController {
         this.dungeonCrawl.getViewController().getGameCompletedPanel().updateText(finalTimeAsString, stringLevelTimes);
     }
     
-    public int updateCurrentTime () {
+    //Adds saved time to current time
+    private int updateCurrentTime () {
         int time = -1;
         if (this.timeManager != null) {
-            time = this.player.getCurrentLevelTime() + this.timeManager.timeFinished();
+            time = this.player.getCurrentLevelTime() + this.timeManager.timePlayed();
+            this.timeManager = new TimeManager();
             this.player.setCurrentLevelTime(time);
         }
         return time;
@@ -304,5 +299,24 @@ public class GameController {
     
     public BattleController getBattleController() {
         return this.battleController;
+    }
+    
+    public void updateItemPickupPanelDisplay() {
+        ItemPickUpPanel ip = this.dungeonCrawl.getViewController().getItemPickUpPanel();
+        //Display current player items
+        String[] playerItems = new String[this.player.getItems().size()];
+        for (int i = 0; i < playerItems.length; i++) {
+            playerItems[i] = this.player.getItems().get(i).getInfo(true);
+        }
+        ip.updateItemButtions(playerItems);
+        ip.updateItemInfo(this.itemToBeCollected);
+    }
+    
+    public Item getItemToBeCollected() {
+        return this.itemToBeCollected;
+    }
+
+    public void setItemToBeCollected(Item itemToBeCollected) {
+        this.itemToBeCollected = itemToBeCollected;
     }
 }

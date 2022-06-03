@@ -290,7 +290,7 @@ public class DatabaseController {
             rs.close();
             statement.close();
         } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
             grid = null;
         }
         return grid;
@@ -396,19 +396,16 @@ public class DatabaseController {
             }
             rs.close();
             statement.close();
-            return ((String[]) data.toArray());
+            
+            String[] toReturn = new String[data.size()];
+            for (int i = 0; i < toReturn.length; i++) {
+                toReturn[i] = data.get(i);
+            }
+            return toReturn;
+            
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
         return null;
-    }
-    
-    public static void main(String[] args) {
-        DatabaseController dbManager = new DatabaseController();
-        System.out.println(dbManager.getConnection());
-        dbManager.createGridTable();
-        dbManager.createPlayerTable();
-        dbManager.createItemsTable();
-        dbManager.createLeaderboardTable();
     }
 }

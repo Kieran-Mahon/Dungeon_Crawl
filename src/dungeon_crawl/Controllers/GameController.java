@@ -71,9 +71,9 @@ public class GameController {
     public boolean loadGame() {
         //Try to load the player and the board
         boolean lp = loadPlayer();
-        System.out.println("lp: " + lp);
-        boolean lb = this.board.loadBoard();
-        System.out.println("lb: " + lb);
+        //System.out.println("lp: " + lp);
+        boolean lb = this.board.loadBoard(); //<
+        //System.out.println("lb: " + lb);
         return !lp && !lb; //Both have to be false to return true
     }
     

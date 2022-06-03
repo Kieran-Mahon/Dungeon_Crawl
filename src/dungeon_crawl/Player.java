@@ -133,7 +133,7 @@ public class Player implements GameObject {
     }
     
     //Use item (used in battle)
-    public void useItem(Item item, Enemy enemy, DungeonCrawl dungeonCrawl) {
+    public void useItem(Item item, Enemy enemy) {
         //Enemy effects
         if (enemy.isBlocking() == false) { //No effects if enemy is blocking
             enemy.takeDamage(item.getDamage());

@@ -4,8 +4,6 @@ import dungeon_crawl.Items.Item;
 import dungeon_crawl.Enemies.Enemy;
 import dungeon_crawl.Player;
 import dungeon_crawl.PlayerPosition;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /*
  * @author Kieran
@@ -70,7 +68,7 @@ public class BattleController {
                     itemInUse = this.player.getItems().get(3);
                     break;
             }
-            this.player.useItem(itemInUse, this.enemy, this.dungeonCrawl);
+            this.player.useItem(itemInUse, this.enemy);
             
             //Update display
             updateBattle();

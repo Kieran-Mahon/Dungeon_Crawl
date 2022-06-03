@@ -70,7 +70,11 @@ public class GameController {
     
     public boolean loadGame() {
         //Try to load the player and the board
-        return !loadPlayer() && !this.board.loadBoard(); //Both have to be false to return true
+        boolean lp = loadPlayer();
+        System.out.println("lp: " + lp);
+        boolean lb = this.board.loadBoard();
+        System.out.println("lb: " + lb);
+        return !lp && !lb; //Both have to be false to return true
     }
     
     public void saveGame() {
@@ -272,9 +276,6 @@ public class GameController {
         //Try to add the player to the leaderboard (leader data is saved on file)
         Leaderboard lb = new Leaderboard();
         lb.tryToAdd(this.player.getPlayerData());
-        
-        //Delete current user data from database
-        //TODO: DB
         
         //Convert final time from int to string time (formated time eg. 5 minutes and 3 seconds)
         String finalTimeAsString = TimeManager.convertSecondToStringTime(this.player.getPlayerData().getFinalTime());

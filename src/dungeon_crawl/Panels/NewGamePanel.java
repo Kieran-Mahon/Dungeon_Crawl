@@ -128,7 +128,7 @@ public class NewGamePanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nameInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameInputActionPerformed
-        // TODO add your handling code here:
+        //Nothing happens
     }//GEN-LAST:event_nameInputActionPerformed
 
     private void startGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameButtonActionPerformed
